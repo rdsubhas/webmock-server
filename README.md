@@ -20,13 +20,17 @@ WebMock::Server is also built on top of WebMock, so you get the full power of We
 
 #### vs [Stubby4J](https://github.com/azagniotov/stubby4j)
 
-Stubby4J runs a real HTTP server, where all the stubbing configuration is defined in simple YML files. Once you've defined the YML files, you cannot change the behavior at runtime. This can be a good or bad. If you have a `/login` endpoint, and for one test you want it to return `200` and for another you want to return `400` - it becomes difficult now since the configuration is static. So you'll end up using different *keywords/data* (e.g. username/password) just to trigger different stubs, and you have to make sure that your tests don't step on each other.
+Stubby4J runs a real HTTP server, where all the stubbing configuration is defined in simple YML files. Once you've defined the YML files, you cannot change the behavior at runtime. This can be both good and bad. If you have a `/login` endpoint, and for one test you want it to return `200` and for another you want to return `400` - it becomes difficult now since the configuration is static. So you'll end up using different *data or keywords* (e.g. username/password) just to trigger different stubs, and you have to make sure that your tests don't step on each other.
 
-Another common problem with static configuration is, it leads to reusing same YML files for multiple tests, and this causes interdependency between tests (i.e. you change one YML and many tests get affected). And finally, you will have difficulty finding out which YML file is tied to which scenario, because its not a direct correlation.
+Another common problem with static configuration is that, it leads to reusing same YML files for multiple tests, and this causes interdependency between tests (i.e. you change one YML and many tests get affected). And finally, you will have difficulty finding out which YML file is tied to which scenario, because its not a direct correlation.
 
-In WebMock::Server, your stubs lie right near your steps, so there are no shared files or configurations and thus no dependencies between each scenario. All this because WebMock::Server can be controlled at runtime. But it doesn't stop you from having shared stubs if you need it though, and it makes it very obvious as well which ones are shared and which ones are not.
+In WebMock::Server, your stubs lie right near your steps, so there are no shared files or configurations and thus no dependencies between tests. All this because WebMock::Server can be controlled at runtime. It doesn't stop you from having shared stubs if you *really* need it though (e.g. sometimes you may want some default login/logout responses to be available all the time). If you are using RSpec - setup the shared stubs under `config.before(:each)`. Or if you're using Cucumber, use `Before` hooks. So it becomes completely obvious and under your control which ones are shared and which are not.
 
-`TODO: Example cucumber steps with stubs`
+#### Other Tools
+
+* [VCR](https://github.com/vcr/vcr) with [PuffingBilly](https://github.com/oesmith/puffing-billy) are not really stub servers, but they are built to record and re-run HTTP API calls. You record actual HTTP requests that hit your real application, and then Play them back during the tests. This again can be good or bad. Its good because it hits real application code. But it leads to specific ordering and dependencies in tests. And everytime you write a new test, you have to first record against a real server, so you still need to have seeding and truncating as part of your test steps. If you're testing complex applications (like a bunch of microservices), everytime you write a new test, you have to run and manage the data in multiple instances. So while replaying tests is easy, creating new tests is more complex.
+
+* [Interfake](https://github.com/basicallydan/interfake) is very similar, and it even has a HTTP API to control the stubs (controlling HTTP over HTTP ftw). Except when it comes to actual matching of requests, its not as feature packed as WebMock.
 
 #### Other Use Cases
 
@@ -34,16 +38,10 @@ Since WebMock::Server can be controlled at runtime, you can write your stubs in 
 
 `TODO: Example with automatic stubs`
 
-#### Other Tools
-
-* [VCR](https://github.com/vcr/vcr) with [PuffingBilly](https://github.com/oesmith/puffing-billy) can also run stub servers, but again dynamically controlling endpoints at runtime are not possible. So it leads to specific ordering in tests. If your tests are going to run in random order, then replaying the cassettes is not going to happen properly.
-
-* [Interfake](https://github.com/basicallydan/interfake) is an awesome tool, it even has a HTTP API to control the stubs (controlling HTTP over HTTP ftw). Except when it comes to actual matching of requests, it doesn't come anywhere close to WebMock.
-
 ## Usage
 
 * Add the gem to your Gemfile
-* Start the stub server by saying `WebMock::Server.start <port>, <a stub url, e.g. http://stubme>`
+* Start the stub server by saying `WebMock::Server.start <port>`
 * Use [WebMock](https://github.com/bblimke/webmock) to stub responses, like:
 
         WebMock::API.stub_request("http://stubme/").to_return(status: 200, body: 'test')
@@ -52,8 +50,6 @@ Since WebMock::Server can be controlled at runtime, you can write your stubs in 
   * You can use the full power of WebMock such as query parameter matching, request body matching, regular expression URLs and much more!
 
 * See the `examples` folder for some partial list of examples. But remember: You can stub whatever WebMock can! So check the WebMock guide as well on how to stub.
-
-See the `spec/examples` folder.
 
 ## Contributing
 
