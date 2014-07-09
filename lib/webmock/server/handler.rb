@@ -19,6 +19,7 @@ module WebMock
             nil
         end
         request.body = env['rack.input'].gets if env['rack.input']
+        request['CONTENT_TYPE'] = env['CONTENT_TYPE']
 
         response = Net::HTTP.new(uri.host, uri.port).request(request)
 

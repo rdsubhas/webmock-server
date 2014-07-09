@@ -2,11 +2,11 @@ module WebMock
   module Server
     module API
 
-      def stub_request(method, uri)
+      def stub_server_request(method, uri)
         WebMock::API.stub_request(method, stubbed_uri(uri))
       end
 
-      def a_request(method, uri)
+      def a_server_request(method, uri)
         WebMock::API.a_request(method, stubbed_uri(uri))
       end
 

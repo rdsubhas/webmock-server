@@ -3,21 +3,18 @@ Bundler.setup
 
 require 'webmock'
 require 'webmock/server'
-require 'httparty'
+require 'rack/test'
 
 RSpec.configure do |config|
   config.include WebMock::Server::API
-
-  config.before :suite do
-    # Start the mock server
-    Thread.new do
-      WebMock::Server.start 3000
-    end
-    sleep 2
-  end
+  config.include Rack::Test::Methods
 
   config.before :each do
-    WebMock.reset!
     WebMock.allow_net_connect!
+    WebMock.reset!
+  end
+
+  def app
+    WebMock::Server::Handler.new
   end
 end
