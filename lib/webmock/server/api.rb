@@ -2,28 +2,28 @@ module WebMock
   module Server
     module API
 
-      def stub_request(method, url)
-        WebMock::API.stub_request(method, stubbed_url(url))
+      def stub_request(method, uri)
+        WebMock::API.stub_request(method, stubbed_uri(uri))
       end
 
-      def reset!
-        WebMock.reset!
+      def a_request(method, uri)
+        WebMock::API.a_request(method, stubbed_uri(uri))
       end
 
       private
 
-      def stubbed_url(url)
-        if url.is_a? String
-          stub_url + url
-        elsif url.is_a? Regexp
-          Regexp.new stub_url + url.source
-        elsif url.is_a? Addressable::Template
-          Addressable::Template.new stub_url + url.pattern
+      def stubbed_uri(uri)
+        if uri.is_a? String
+          stub_uri + uri
+        elsif uri.is_a? Regexp
+          Regexp.new stub_uri + uri.source
+        elsif uri.is_a? Addressable::Template
+          Addressable::Template.new stub_uri + uri.pattern
         end
       end
 
-      def stub_url
-        "http://stubme"
+      def stub_uri
+        STUB_URI
       end
 
     end

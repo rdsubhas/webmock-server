@@ -6,12 +6,12 @@ require 'webmock/server'
 require 'httparty'
 
 RSpec.configure do |config|
-  config.include WebMock::API
+  config.include WebMock::Server::API
 
   config.before :suite do
     # Start the mock server
     Thread.new do
-      WebMock::Server.start 3000, 'http://stubme'
+      WebMock::Server.start 3000
     end
     sleep 2
   end

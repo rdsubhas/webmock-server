@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'POST' do
   it "root" do
-    stub_request(:post, 'http://stubme/')
+    stub_request(:post, '/')
       .to_return(body: 'stub body', status: 201, headers: { 'x-custom-header' => 'stub header'})
 
     response = HTTParty.post 'http://localhost:3000/'
@@ -12,7 +12,7 @@ describe 'POST' do
   end
 
   it "path" do
-    stub_request(:post, 'http://stubme/test')
+    stub_request(:post, '/test')
       .to_return(body: 'stub body', status: 201, headers: { 'x-custom-header' => 'stub header'})
 
     response = HTTParty.post 'http://localhost:3000/test'
@@ -22,7 +22,7 @@ describe 'POST' do
   end
 
   it "query parameters" do
-    stub_request(:post, 'http://stubme/test')
+    stub_request(:post, '/test')
       .with(query: hash_including(x: 'y'))
       .to_return(body: 'stub body', status: 201, headers: { 'x-custom-header' => 'stub header'})
 
@@ -33,7 +33,7 @@ describe 'POST' do
   end
 
   it "request body" do
-    stub_request(:post, 'http://stubme/test')
+    stub_request(:post, '/test')
       .with(body: { x: 'y' })
       .to_return(body: 'stub body', status: 201, headers: { 'x-custom-header' => 'stub header'})
 

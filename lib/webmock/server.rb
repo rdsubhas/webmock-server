@@ -2,11 +2,14 @@ require "webmock/server/version"
 
 module WebMock
   module Server
-    autoload :Handler, "webmock/server/handler"
+    STUB_URI = 'http://stubme'
 
-    def self.start(port, stub_url)
+    autoload :Handler, "webmock/server/handler"
+    autoload :API, "webmock/server/api"
+
+    def self.start(port)
       require "rack"
-      ::Rack::Handler::WEBrick.run Handler.new(stub_url), Port: port
+      ::Rack::Handler::WEBrick.run Handler.new, Port: port
     end
   end
 end

@@ -5,14 +5,8 @@ module WebMock
   module Server
     class Handler
 
-      attr_reader :url
-
-      def initialize(url)
-        @url = url
-      end
-
       def call(env)
-        uri = URI.parse @url
+        uri = stub_uri
         uri.path = env['PATH_INFO']
         uri.query = env['QUERY_STRING']
 
@@ -30,6 +24,12 @@ module WebMock
 
         headers = Hash[response.to_hash.map { |k,v| [k, v[0]] }]
         [ response.code, headers, [ response.body ]]
+      end
+
+      private
+
+      def stub_uri
+        URI.parse STUB_URI
       end
 
     end

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'GET' do
   it "root" do
-    stub_request(:get, 'http://stubme/')
+    stub_request(:get, '/')
       .to_return(body: 'stub body', status: 201, headers: { 'x-custom-header' => 'stub header'})
 
     response = HTTParty.get 'http://localhost:3000/'
@@ -12,7 +12,7 @@ describe 'GET' do
   end
 
   it "path" do
-    stub_request(:get, 'http://stubme/test')
+    stub_request(:get, '/test')
       .to_return(body: 'stub body', status: 201, headers: { 'x-custom-header' => 'stub header'})
 
     response = HTTParty.get 'http://localhost:3000/test'
@@ -22,7 +22,7 @@ describe 'GET' do
   end
 
   it "query parameters" do
-    stub_request(:get, 'http://stubme/test')
+    stub_request(:get, '/test')
       .with(query: hash_including(x: 'y'))
       .to_return(body: 'stub body', status: 201, headers: { 'x-custom-header' => 'stub header'})
 
