@@ -1,9 +1,12 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
 
+require 'webmock'
 require 'webmock/server'
 require 'webmock/server/cucumber'
+require 'lookout/rack/test/cucumber'
 
-Thread.new do
-  WebMock::Server.start 3000
-end
-sleep 2
+Lookout::Rack::Test.app = WebMock::Server::Handler
+require 'lookout/rack/test/cucumber/server'
+
+WebMock.allow_net_connect!
+World(WebMock::Server::API)
