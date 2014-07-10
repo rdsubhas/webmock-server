@@ -2,7 +2,7 @@ require "webmock/server/version"
 
 module WebMock
   module Server
-    STUB_URI = 'http://stubme'
+    STUB_URI = 'http://localhost:65534'
 
     autoload :Handler, "webmock/server/handler"
     autoload :API, "webmock/server/api"
