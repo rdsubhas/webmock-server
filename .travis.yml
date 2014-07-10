@@ -9,7 +9,6 @@ deploy:
   provider: rubygems
   api_key:
     secure: GovDViLCjDKdoGK35Y462dswcOAWnl+gB/wBJw0NzJk6cnzQDGcBBQlc/2b0p09RzvvVpjB2/p61wuatbBnJCU9sYgWNid3fz01lf3gD7KNypxbGoJBSkUTvHM0CYtdOiV1Owt2mdt8eQauRrvWvjR62rEbwB6TrJMook20YB2k=
-  gem: webmock-server
   on:
+    all_branches: true
     tags: true
-    repo: rdsubhas/webmock-server
