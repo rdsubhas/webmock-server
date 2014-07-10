@@ -21,10 +21,13 @@ module WebMock
         request.body = env['rack.input'].gets if env['rack.input']
         request['CONTENT_TYPE'] = env['CONTENT_TYPE']
 
-        response = Net::HTTP.new(uri.host, uri.port).request(request)
-
-        headers = Hash[response.to_hash.map { |k,v| [k, v[0]] }]
-        [ response.code, headers, [ response.body ]]
+        begin
+          response = Net::HTTP.new(uri.host, uri.port).request(request)
+          headers = Hash[response.to_hash.map { |k,v| [k, v[0]] }]
+          [ response.code, headers, [ response.body ]]
+        rescue SocketError
+          [ 599, {}, ['Unstubbed!'] ]
+        end
       end
 
       private
