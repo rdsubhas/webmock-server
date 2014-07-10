@@ -25,7 +25,7 @@ module WebMock
           response = Net::HTTP.new(uri.host, uri.port).request(request)
           headers = Hash[response.to_hash.map { |k,v| [k, v[0]] }]
           [ response.code, headers, [ response.body ]]
-        rescue SocketError
+        rescue
           [ 599, {}, ['Unstubbed!'] ]
         end
       end

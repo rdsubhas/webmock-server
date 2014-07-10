@@ -8,9 +8,9 @@ module WebMock
     autoload :API, "webmock/server/api"
     autoload :Cucumber, "webmock/server/cucumber"
 
-    def self.start(port)
+    def self.start(options={})
       require "rack"
-      ::Rack::Handler::WEBrick.run Handler.new, Port: port
+      ::Rack::Handler::WEBrick.run Handler.new, options
     end
   end
 end
